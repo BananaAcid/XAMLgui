@@ -26,7 +26,7 @@ Import-Module -Name XAMLgui
 
 Hide-Console | Out-Null
 
-Function ProjectTest1.MainWindow.btnHelloWorld_Click($Sender, $EventArgs) {
+Function ProjectTest1.MainWindow.btnHelloWorld_Click {
     Show-MessageBox "Hello World!"
 }
 
