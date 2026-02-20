@@ -24,14 +24,13 @@ Save-Module -Name XAMLgui -Path .\   # this creates a subfolder .\XAMLgui\1.1.0\
 ```powershell
 Import-Module -Name XAMLgui
 
-Enable-VisualStyles
 Hide-Console | Out-Null
 
 Function ProjectTest1.MainWindow.btnHelloWorld_Click($Sender, $EventArgs) {
     Show-MessageBox "Hello World!"
 }
 
-New-Window .\MainWindow.xaml -Debug | Show-Window
+. New-Window .\MainWindow.xaml -Debug | Show-Window
 ```
 
 **About the event handler function:**
@@ -39,6 +38,9 @@ New-Window .\MainWindow.xaml -Debug | Show-Window
     - Example: `<Button click="btnHelloWorld_Click">click me</Button>`
 - If the window has a class name, it must preceed the function event name
     - `<Window x:Class="ProjectTest1.MainWindow" ...>`
+- `New-Window` has to be dot-sourced in this case
+- More about using handlers: [docs/README.md](https://github.com/BananaAcid/XAMLgui/blob/main/docs/README.md)
+
 
 > [!TIP]
 > **About the `-Debug` param on New-Window.. functions**
@@ -57,12 +59,22 @@ WinUI3 [might be nativly supported](https://blog.nkasco.com/wordpress/index.php/
 
 Fluent UI usage (dll, namespace, xaml), see [here](https://blog.nkasco.com/wordpress/index.php/2024/05/21/how-to-use-winui-3-styles-with-wpf-forms-in-powershell/).
 
+For better notification bubbles, use https://github.com/Windos/BurntToast instead of the built-in `Invoke-BalloonTip`
+
 > [!IMPORTANT]
 > Use **Visual Studio**, create a WPF-Application (XAML, Desktop), to create a XAML file containing a `<Window>`.
 >
 > You can use the XAML designer view in Visual Studio to add and arange the components.
 
 ## 📝 Changes
+
+### v1.1.1
+- added `Set-RunOnce` to run the current or another script once at startup
+- added `New-ClonedObjectDeep` to deep clone an object (as long as it is binary serializable)
+- renamed `New-ClonedObjectStruct` to `New-ClonedObject`
+- added `Get-IconFromFile` for a window icon or notification bubble
+- added `Get-KnownEvents` to list events known by XAMLgui
+- changed code structure
 
 ### v1.1.0
 - added better handling of `<Window`

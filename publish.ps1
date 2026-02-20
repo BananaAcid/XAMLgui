@@ -33,3 +33,7 @@ New-ModuleManifest -Path ".\XAMLgui\XAMLgui.psd1" `
 <#
 xaml gui visual-studio dotnet powershell wpf desktop-application rapid-prototyping powershell-module ui-framework xaml-gui
 #>
+
+<#
+Invoke-PS2EXE -InputFile "MyScript.ps1" -OutputFile "MyApp.exe" -Title "Custom Title" -Description "My Branded App"
+#>

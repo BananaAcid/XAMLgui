@@ -46,7 +46,6 @@ Hide-Console | Out-Null
 #    <Label HorizontalAlignment="Right" MouseDown="LbCopy_MouseDown" Cursor="Hand" Foreground="Blue">© Nabil Redmann 2019</Label>
 function Updater.MainWindow.LbCopy_MouseDown($Sender, $EventArgs) {
     Show-MessageBox "0.1"
-    #Invoke-BalloonTip "abc"
 }
 
 # if 
@@ -55,13 +54,22 @@ function LbCopy_MouseDown($Sender, $EventArgs) {
     Show-MessageBox "0.2"
 }
 
+# if
+# New-Window is not dot-sourced
+function global:Updater.MainWindow.LbCopy_MouseDown($Sender, $EventArgs) {
+    Show-MessageBox "0.0"
+}
+
+
 # Load the main gui, get an array of $elements (as in $knownEvents), and a handle to the form itself
 # AND provide an optional scriptblock for additional handlers (could also point to a file)
-$Elements,$MainWindow = New-Window $XamlFile -Debug -Handlers {
-    function Updater.MainWindow.doActions_Click {
+$Elements,$MainWindow = . New-Window $XamlFile -Debug -Handlers {
+    function Updater.MainWindow.DoActions_Click {
         Write-Host "doActions_Click"
         Show-MessageBox "0.3"
     }
+
+    Write-Host "Handlers loaded"
 }
 
 # DEBUG *ELEMENTS: 
@@ -74,11 +82,10 @@ Write-Host "`n All `$Elements.* :" ; $Elements | Format-Table
 $Elements.doInstall.Add_Click({
     Show-MessageBox "1"
 })
-if ($Elements.Button_AD10EE03_1) {
-    $Elements.Button_AD10EE03_1.Add_Click({
-        Invoke-BalloonTip "pressed Button_AD10EE03_1"
-    })
-}
+
+$Elements.Button_AD10EE03_1.Add_Click({
+    Invoke-BalloonTip "pressed Button_AD10EE03_1"
+})
 
 # Add a handler to an initialized window by element's class name and event name to open a new window
 $Elements.doInstallAll.Add_Click({

@@ -11,6 +11,7 @@
 
 # This is the Root Module that loads all components
 
+. $PSScriptRoot\helpers.ps1
 . $PSScriptRoot\framework.ps1
 
 Export-ModuleMember -Function *
