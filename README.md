@@ -57,7 +57,10 @@ WinUI3 [might be nativly supported](https://blog.nkasco.com/wordpress/index.php/
 
 Fluent UI usage (dll, namespace, xaml), see [here](https://blog.nkasco.com/wordpress/index.php/2024/05/21/how-to-use-winui-3-styles-with-wpf-forms-in-powershell/).
 
-Use Visual Studio, create a WPF-Application (XAML, Desktop), to create a XAML file containing a `<Window>`.
+> [!IMPORTANT]
+> Use **Visual Studio**, create a WPF-Application (XAML, Desktop), to create a XAML file containing a `<Window>`.
+>
+> You can use the XAML designer view in Visual Studio to add and arange the components.
 
 ## 📝 Changes
 
