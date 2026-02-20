@@ -48,8 +48,8 @@ New-Window .\MainWindow.xaml -Debug | Show-Window
 
 ## ⭐ Examples and general documentation
 
-- Quick usage: [main.example-mini.ps1](https://github.com/BananaAcid/XAMLgui/blob/main/docs/example-mini.ps1)
-- More extensive usage: [main.ps1](https://github.com/BananaAcid/XAMLgui/blob/main/docs/example-main.ps1)
+- Quick usage: [docs/example-mini.ps1](https://github.com/BananaAcid/XAMLgui/blob/main/docs/example-mini.ps1)
+- More extensive usage: [docs/example-main.ps1](https://github.com/BananaAcid/XAMLgui/blob/main/docs/example-main.ps1)
 
 ## ℹ️ Notes
 

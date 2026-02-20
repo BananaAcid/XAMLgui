@@ -2,7 +2,7 @@
   Example
 #>
 Param(
-    $XamlFile = ".\gui.xaml"
+    $XamlFile = ".\MainWindow.xaml"
 )
 
 
