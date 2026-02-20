@@ -12,7 +12,7 @@
 RootModule = 'XAMLgui.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.1.1'
+ModuleVersion = '1.1.2'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -95,19 +95,27 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @()
-
+        Tags = @(
+            "xaml", 
+            "gui", 
+            "wpf", 
+            "rapid-prototyping", 
+            "powershell-module", 
+            "ui-framework", 
+            "xaml-gui"
+        )
+            
         # A URL to the license for this module.
-        # LicenseUri = ''
+        LicenseUri = 'https://github.com/BananaAcid/XAMLgui/blob/main/LICENSE'
 
         # A URL to the main website for this project.
-        # ProjectUri = ''
+        ProjectUri = 'https://github.com/BananaAcid/XAMLgui'
 
         # A URL to an icon representing this module.
         # IconUri = ''
 
         # ReleaseNotes of this module
-        # ReleaseNotes = ''
+        ReleaseNotes = 'https://github.com/BananaAcid/XAMLgui'
 
         # Prerelease string of this module
         # Prerelease = ''
