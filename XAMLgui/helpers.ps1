@@ -15,6 +15,8 @@
         based on https://stackoverflow.com/a/52416973/1644202
 #>
 
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingCmdletAliases', '', Scope = 'Function', Target = '*')]
+Param()
 
 # Enable visual styles, in case there will be a message box or alike
 Function Enable-VisualStyles
@@ -434,4 +436,31 @@ Function New-ClonedObject
     param( [PSCustomObject]$srcObject )
 
     return $srcObject.psobject.copy() # | ConvertTo-Json -depth 100 | ConvertFrom-Json
+}
+
+# To be able to use a local module, because deploying the app on an USB stick
+# will need it and might not have internet access
+function Find-LocalModulePath {
+    param(
+        [Parameter(Mandatory=$true, Position=0)]
+        [String] $Name,
+
+        [String] $Path = ".\ps_modules"
+    )
+
+    return ls "$Path\$Name" -ErrorAction SilentlyContinue | select -Last 1 |% FullName
+}
+function Import-LocalModule {
+    param(
+        [Parameter(Mandatory=$true, Position=0)]
+        [String] $Name,
+
+        [String] $Path = ".\ps_modules",
+
+        [Boolean] $Download = $True
+    )
+
+    if (-not (Find-LocalModulePath $Name) -and $Download) { Save-Module -Name $Name -Path $Path }
+    $path = Find-LocalModulePath $Name -Path $Path
+    if (-not $path) { Write-Error "Unable to find $Name module, could not download. Aborting."; Exit 99 }
 }

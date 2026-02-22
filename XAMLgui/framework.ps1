@@ -15,6 +15,9 @@
         based on https://stackoverflow.com/a/52416973/1644202
 #>
 
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingCmdletAliases', '', Scope = 'Function', Target = '*')]
+Param()
+
 $script:knownEvents = @(
     # Some major events. There are way more.
     # Window

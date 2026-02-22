@@ -68,6 +68,9 @@ For better notification bubbles, use https://github.com/Windos/BurntToast instea
 
 ## 📝 Changes
 
+### v1.1.2
+- added `Import-LocalModule` to load a module from .\ps_modules (or possibly download it and then import it)
+
 ### v1.1.1
 - added `Set-RunOnce` to run the current or another script once at startup
 - added `New-ClonedObjectDeep` to deep clone an object (as long as it is binary serializable)
