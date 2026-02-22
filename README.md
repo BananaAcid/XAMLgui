@@ -70,6 +70,8 @@ For better notification bubbles, use https://github.com/Windos/BurntToast instea
 
 ### v1.1.2
 - added `Import-LocalModule` to load a module from .\ps_modules (or possibly download it and then import it)
+- added `Get-PowershellInterpreter` to get current used PowerShell executable and a list if `powershell.exe` or `pwsh.exe` are available
+- changed `Set-RunOnce` by addind a param `-Interpreter`
 
 ### v1.1.1
 - added `Set-RunOnce` to run the current or another script once at startup

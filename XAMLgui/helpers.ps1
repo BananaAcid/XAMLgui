@@ -363,6 +363,29 @@ Function Select-FileDialog
     }
 }
 
+Function Get-PowershellInterpreter
+{
+    <#
+    .SYNOPSIS
+    Returns the powershell interpreter used in the current session, and a list if `poershell.exe` or `pwsh.exe` are available.
+    .EXAMPLE
+    $current, $available = Get-PowershellInterpreter
+    #>
+    If ($PSVersionTable.PSEdition -eq "Desktop") {
+        $current = "powershell.exe"
+    }
+    Else { #"Core"
+        $current = "pwsh.exe"
+    }
+
+    $available = @{
+        "powershell.exe" = (Command powershell.exe)
+        "pwsh.exe" = (Command pwsh.exe)
+    }
+
+    return $current, $available
+}
+
 Function Set-RunOnce
 {
     <# 
@@ -382,6 +405,8 @@ Function Set-RunOnce
     Version: 1.0 
     Date: 2018-08-17 
 
+    # modified by Nabil Redmann
+
     .LINK 
     https://www.netz-weise-it.training/ 
     #>
@@ -391,14 +416,18 @@ Function Set-RunOnce
         #The Name of the Registry Key in the Autorun-Key.
         [string]$KeyName = "Run",
 
+
         #Command to run
-        [string]$Command = "powershell.exe -executionpolicy bypass -file `"$($MyInvocation.ScriptName)`"",
+        [string]$Command = "-executionpolicy bypass -file `"$($MyInvocation.ScriptName)`"",
 
         #Command params to add
-        [String]$Params = ""
+        [String]$Params = "",
+
+        #Interpreter to use
+        [String]$Interpreter = "powershell.exe"
     )
 
-    $cmdStr = "$($Command) $($Params)"
+    $cmdStr = "$($Interpreter) $($Command) $($Params)"
 
     
     If (-not ((Get-Item -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce).$KeyName )) {
