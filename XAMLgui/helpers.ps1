@@ -491,7 +491,7 @@ function Import-LocalModule {
         [Boolean] $Download = $True
     )
 
-    if (-not (Find-LocalModulePath $Name) -and $Download) { Save-Module -Name $Name -Path $Path }
+    if (-not (Find-LocalModulePath $Name -Path $Path) -and $Download) { Save-Module -Name $Name -Path $Path }
     $path = Find-LocalModulePath $Name -Path $Path
     if (-not $path) { Write-Error "Unable to find $Name module, could not download. Aborting."; Exit 99 }
 }
