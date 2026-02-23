@@ -495,3 +495,12 @@ function Import-LocalModule {
     $path = Find-LocalModulePath $Name -Path $Path
     if (-not $path) { Write-Error "Unable to find $Name module, could not download. Aborting."; Exit 99 }
 }
+
+# Usefull for Start-AwaitJob -InitBlock (@( Get-FnAsString "fn1", Get-FnAsString "fn2" ) -Join "`n")
+Function Get-FnAsString {
+    param( [String]$FnName )
+
+    $fn = Get-Command -Name $FnName -CommandType Function
+
+    return "Function {0} {{{1}}}" -f $fn.Name, $fn.ScriptBlock
+}

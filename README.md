@@ -74,6 +74,7 @@ For better notification bubbles, use https://github.com/Windos/BurntToast instea
 - changed `Set-RunOnce` by addind a param `-Interpreter`
 - added `[string]$InitBlock` to `Start-AwaitJob`
 - changed `Show-Messagebox` to always enable visual styles
+- added `Get-FnAsString` - Usefull for ```Start-AwaitJob -InitBlock (@( Get-FnAsString "fn1", Get-FnAsString "fn2" ) -Join "`n")```
 
 ### v1.1.1
 - added `Set-RunOnce` to run the current or another script once at startup
