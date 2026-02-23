@@ -66,15 +66,51 @@ For better notification bubbles, use https://github.com/Windos/BurntToast instea
 >
 > You can use the XAML designer view in Visual Studio to add and arange the components.
 
+
+## XAMLgui Framework Functions
+```
+Show-Console
+Hide-Console
+Get-PropOrNull
+Get-VisualChildren
+Get-CellItemByName
+Wait-AwaitJob
+Start-AwaitJob
+Show-MessageBox
+Invoke-BalloonTip
+Get-IconFromFile
+Select-FolderDialog
+Select-FileDialog
+Get-PowershellInterpreter
+Set-RunOnce
+New-ClonedObjectDeep
+New-ClonedObject
+Find-LocalModulePath
+Import-LocalModule
+Get-FnAsString
+Add-KnownEvents
+Set-KnownEvents
+Get-KnownEvents
+New-Window
+New-WindowUrl
+New-WindowXamlString
+Show-Window
+Enable-VisualStyles
+```
+
+
 ## 📝 Changes
 
-### v1.1.2
+### v1.1.3
 - added `Import-LocalModule` to load a module from .\ps_modules (or possibly download it and then import it)
 - added `Get-PowershellInterpreter` to get current used PowerShell executable and a list if `powershell.exe` or `pwsh.exe` are available
 - changed `Set-RunOnce` by addind a param `-Interpreter`
 - added `[string]$InitBlock` to `Start-AwaitJob`
 - changed `Show-Messagebox` to always enable visual styles
 - added `Get-FnAsString` - Usefull for ```Start-AwaitJob -InitBlock (@( Get-FnAsString "fn1", Get-FnAsString "fn2" ) -Join "`n")```
+
+## v1.1.2
+- internal test build
 
 ### v1.1.1
 - added `Set-RunOnce` to run the current or another script once at startup
