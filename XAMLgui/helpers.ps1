@@ -481,6 +481,7 @@ function Find-LocalModulePath {
 
     return ls "$Path\$Name" -ErrorAction SilentlyContinue | select -Last 1 |% FullName
 }
+# make sure module is downloaded, then import
 function Import-LocalModule {
     param(
         [Parameter(Mandatory=$true, Position=0)]
@@ -496,6 +497,23 @@ function Import-LocalModule {
     if (-not $fullPath) { Write-Error "Unable to find $Name module, could not download. Aborting."; Exit 99 }
     Import-Module (Join-Path $fullPath $Name)
 }
+# make sure module is downloaded, then return full path
+Function Get-LocalModule {
+    param(
+        [Parameter(Mandatory=$true, Position=0)]
+        [String] $Name,
+
+        [String] $Path = ".\ps_modules",
+
+        [Boolean] $Download = $True
+    )
+
+    if (-not (Find-LocalModulePath $Name -Path $Path) -and $Download) { Save-Module -Name $Name -Path $Path }
+    $fullPath = Find-LocalModulePath $Name -Path $Path
+    if (-not $fullPath) { Write-Error "Unable to find $Name module, could not download. Aborting."; Exit 99 }
+    return $fullPath
+}
+
 
 # Usefull for Start-AwaitJob -InitBlock (@( Get-FnAsString "fn1", Get-FnAsString "fn2" ) -Join "`n")
 Function Get-FnAsString {

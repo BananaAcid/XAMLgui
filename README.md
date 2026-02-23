@@ -101,6 +101,9 @@ Enable-VisualStyles
 
 ## 📝 Changes
 
+### v1.1.4
+- added `Get-LocalModule` to download a module if needed and return its path
+
 ### v1.1.3
 - added `Import-LocalModule` to load a module from .\ps_modules (or possibly download it and then import it)
 - added `Get-PowershellInterpreter` to get current used PowerShell executable and a list if `powershell.exe` or `pwsh.exe` are available
