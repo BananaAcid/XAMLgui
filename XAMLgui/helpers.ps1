@@ -492,8 +492,9 @@ function Import-LocalModule {
     )
 
     if (-not (Find-LocalModulePath $Name -Path $Path) -and $Download) { Save-Module -Name $Name -Path $Path }
-    $path = Find-LocalModulePath $Name -Path $Path
-    if (-not $path) { Write-Error "Unable to find $Name module, could not download. Aborting."; Exit 99 }
+    $fullPath = Find-LocalModulePath $Name -Path $Path
+    if (-not $fullPath) { Write-Error "Unable to find $Name module, could not download. Aborting."; Exit 99 }
+    Import-Module (Join-Path $fullPath $Name)
 }
 
 # Usefull for Start-AwaitJob -InitBlock (@( Get-FnAsString "fn1", Get-FnAsString "fn2" ) -Join "`n")
