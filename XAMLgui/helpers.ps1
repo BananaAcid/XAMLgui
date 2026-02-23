@@ -113,14 +113,14 @@ Function Get-CellItemByName
 
 Function Wait-AwaitJob
 {
-    Param ( [Parameter(Mandatory=$true)]$job )
+    Param ( [Parameter(Mandatory=$true)]$Job )
 
-    while ($job.state -eq 'Running') {
+    while ($Job.state -eq 'Running') {
         [System.Windows.Forms.Application]::DoEvents()  # keep form responsive
     }
 
     # Captures and throws any exception in the job output -> '-ErrorAction stop' --- otherwise returns result
-    return Receive-Job $job -ErrorAction Continue
+    return Receive-Job $Job -ErrorAction Continue
 }
 
 # start and await a job
@@ -128,18 +128,19 @@ Function Start-AwaitJob
 {
     Param
     (
-        [Parameter(Mandatory=$true)] $scriptBlock,
-        [Parameter(Mandatory=$false)] $ArgumentList=@(),
-        [Parameter(Mandatory=$false)] $Dir, # sets the current working directory (use it to set the subfolder) !
-        [Parameter(Mandatory=$false)] $await = $True
+        [Scriptblock][Parameter(Mandatory=$true)] $ScriptBlock,
+        [string[]][Parameter(Mandatory=$false)] $ArgumentList=@(),
+        [string][Parameter(Mandatory=$false)] $Dir = "", # sets the current working directory (use it to set the subfolder) !
+        [boolean][Parameter(Mandatory=$false)] $Await = $True,
+        [string][Parameter(Mandatory=$false)] $InitBlock = ""
     )
 
     $useDir = $PWD
-    If ($Dir) { $useDir = Resolve-Path $Dir }
+    If ($Dir -ne "") { $useDir = Resolve-Path $Dir }
 
-    $job = Start-Job -Init ([ScriptBlock]::Create("Set-Location '$($useDir -replace "'", "''")'")) -ScriptBlock $scriptBlock -ArgumentList $ArgumentList
+    $job = Start-Job -Init ([ScriptBlock]::Create("Set-Location '$($useDir -replace "'", "''")'`n" + $InitBlock)) -ScriptBlock $ScriptBlock -ArgumentList $ArgumentList
 
-    If ($await) {
+    If ($Await) {
         return Wait-AwaitJob $job    
     }
     Else {
@@ -161,6 +162,7 @@ Function Show-MessageBox
     )
 
     Add-Type -AssemblyName System.Windows.Forms
+    [System.Windows.Forms.Application]::EnableVisualStyles()
     $MsgBoxResult = [System.Windows.Forms.MessageBox]::Show($Message,$Title,[Windows.Forms.MessageBoxButtons]::$Buttons,[Windows.Forms.MessageBoxIcon]::$Type) 
 
     Return $MsgBoxResult 
