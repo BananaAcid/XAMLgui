@@ -129,7 +129,7 @@ Function Start-AwaitJob
     Param
     (
         [Scriptblock][Parameter(Mandatory=$true)] $ScriptBlock,
-        [string[]][Parameter(Mandatory=$false)] $ArgumentList=@(),
+        [Object[]][Parameter(Mandatory=$false)] $ArgumentList=@(),
         [string][Parameter(Mandatory=$false)] $Dir = "", # sets the current working directory (use it to set the subfolder) !
         [boolean][Parameter(Mandatory=$false)] $Await = $True,
         [string][Parameter(Mandatory=$false)] $InitBlock = ""
@@ -522,4 +522,21 @@ Function Get-FnAsString {
     $fn = Get-Command -Name $FnName -CommandType Function
 
     return "Function {0} {{{1}}}" -f $fn.Name, $fn.ScriptBlock
+}
+
+# Write to the error pipe and have it appear colored, in the console
+Function Write-ErrorClean {
+    param(
+        [Parameter(Mandatory=$true, Position=0)]
+        [String] $Message,
+
+        # ForegoundColor
+        [Parameter(Mandatory=$false, Position=1)]
+        [String] $ForegroundColor = 'Red'
+    )
+
+    $oldColor = [Console]::ForegroundColor
+    [Console]::ForegroundColor = $ForegroundColor
+    [Console]::Error.WriteLine($Message)
+    [Console]::ForegroundColor = $oldColor
 }
