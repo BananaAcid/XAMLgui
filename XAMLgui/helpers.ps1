@@ -527,7 +527,7 @@ Function Get-FnAsString {
 # Write to the error pipe and have it appear colored, in the console
 Function Write-ErrorClean {
     param(
-        [Parameter(Mandatory=$true, Position=0)]
+        [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true)]
         [String] $Message,
 
         # ForegoundColor
