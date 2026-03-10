@@ -95,8 +95,6 @@ Function Get-CellItemByName
         $Name
     )
 
-    [System.Windows.Forms.Application]::DoEvents()
-
     if ($DebugPreference -ne 'SilentlyContinue') { $Parent.value | Write-Host }
 
     $items = (Get-VisualChildren ($Parent.Value) |? { $_.GetType().Name -eq "ListViewItem" })
@@ -114,6 +112,9 @@ Function Get-CellItemByName
 Function Wait-AwaitJob
 {
     Param ( [Parameter(Mandatory=$true)]$Job )
+
+    # for DoEvents
+    Add-Type -AssemblyName System.Windows.Forms
 
     while ($Job.state -eq 'Running') {
         [System.Windows.Forms.Application]::DoEvents()  # keep form responsive
@@ -213,7 +214,7 @@ Function Invoke-BalloonTip
         [int]$Duration=1000
     )
     
-    Add-Type -AssemblyName System.Windows.Forms
+    Add-Type -AssemblyName System.Drawing, System.Windows.Forms
 
     If (-NOT $global:balloon) {
         Write-Debug 'Initiating creation of balloon'
@@ -257,6 +258,8 @@ Function Get-IconFromFile
         [string][Parameter(Mandatory=$True)]$FilePath,
         [string][Parameter(Mandatory=$False)]$Type
     )
+
+    Add-Type -AssemblyName System.Drawing
 
     If (-not (Test-Path $FilePath)) {
         Write-Warning "Icon file not found at: $FilePath"
