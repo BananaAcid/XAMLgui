@@ -103,6 +103,9 @@ For better notification bubbles, use https://github.com/Windos/BurntToast instea
 
 ## 📝 Changes
 
+### v1.1.5
+- added types to some fns (they where added in the test project globaly before)
+
 ### v1.1.4
 - added `Get-LocalModule` to download a module if needed and return its path
 - fixed `Start-AwaitJob` param `-Arguments` to be the correct `Object[]` type
