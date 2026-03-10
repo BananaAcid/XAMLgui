@@ -68,36 +68,37 @@ For better notification bubbles, use https://github.com/Windos/BurntToast instea
 
 
 ## XAMLgui Framework Functions
-```
-Show-Console
-Hide-Console
-Get-PropOrNull
-Get-VisualChildren
-Get-CellItemByName
-Wait-AwaitJob
-Start-AwaitJob
-Show-MessageBox
-Invoke-BalloonTip
-Get-IconFromFile
-Select-FolderDialog
-Select-FileDialog
-Get-PowershellInterpreter
-Set-RunOnce
-New-ClonedObjectDeep
-New-ClonedObject
-Find-LocalModulePath
-Import-LocalModule
-Get-FnAsString
-Add-KnownEvents
-Set-KnownEvents
-Get-KnownEvents
-New-Window
-New-WindowUrl
-New-WindowXamlString
-Show-Window
-Enable-VisualStyles
-...
-```
+| Command | Params | Description |
+| --- | --- | --- |
+| Hide-Console | | Hide the console window. |
+| Show-Console | | Show the console window. |
+| Get-PropOrNull | [object]$parent, [string]$prop | Get the value of a property on an object or return null if the property does not exist. |
+| Get-VisualChildren | [object]$Parent | Get all visual children of a parent object. |
+| Get-CellItemByName | [ref]$Parent, $ItemNo, $Name | Get a child item from a parent object by name. |
+| Wait-AwaitJob | [Parameter(Mandatory=$true)]$Job | Wait for a job to complete. |
+| Start-AwaitJob | [Scriptblock][Parameter(Mandatory=$true)]$ScriptBlock, [Object[]]$ArgumentList=@(), [string]$Dir="", [boolean]$Await=$True, [string]$InitBlock="" | Start a job and wait for it to complete. |
+| Show-MessageBox | [string]$Message="This is a default Message.", [string]$Title="Default Title", [ValidateSet("Asterisk","Error","Exclamation","Hand","Information","None","Question","Stop","Warning")] [string]$Type="Error", [ValidateSet("AbortRetryIgnore","OK","OKCancel","RetryCancel","YesNo","YesNoCancel")] [string]$Buttons="OK" | Show a message box with the specified message, title, and icon. |
+| Invoke-BalloonTip | [Parameter(Mandatory=$True)][string]$Message, [string]$Title="Attention $env:username", [System.Windows.Forms.ToolTipIcon]$MessageType="Info", [string]$SysTrayIconPath="", [int]$Duration=1000 | Show a balloon tip with the specified message, title, icon, and duration. |
+| Get-IconFromFile |[string][Parameter(Mandatory=$True)]$FilePath, [string][Parameter(Mandatory=$False)]$Type | Get an icon from a file. |
+| Select-FolderDialog | [string]$Title="Select a Folder", [string]$Description="", [string]$Path=[Environment]::GetFolderPath("Desktop"), [string]$SelectedPath="", [boolean]$Multiselect=$false, [boolean]$ShowNewFolderButton=$false | Show a folder dialog and return the selected folder path. |
+| Select-FileDialog | [string]$Title="Select Folder", [string]$Path="Desktop", [string]$Filter='Images (*.jpg, *.png) \| *.jpg;*.png', [boolean]$Multiselect=$false | Show a file dialog and return the selected file path. |
+| Get-PowershellInterpreter | | Get the current PowerShell interpreter. |
+| Set-RunOnce | [string]$KeyName="Run", [string]$Command="-executionpolicy bypass -file '$($MyInvocation.ScriptName)'", [String]$Params="", [String]$Interpreter="powershell.exe" | Set a script block to run once. |
+| New-ClonedObjectDeep | [object]$Object | Clone an object and all its properties recursively. |
+| New-ClonedObject | [object]$Object | Clone an object and all its properties. |
+| Find-LocalModulePath | [string]$Name, [String]$Path=".\ps-modules" | Find the path of a module in the current directory. |
+| Get-LocalModule | [string]$Name, [String]$Path=".\ps-modules", [Boolean]$Download=$True | Get the path of a module in the current directory if it exists, otherwise download it and return its path. |
+| Import-LocalModule | [string]$Name, [String]$Path=".\ps-modules", [Boolean]$Download=$True | Import a module from the current directory's `\ps-module` folder. |
+| Get-FnAsString | [string]$FnName | Get the string representation of a function. |
+| Add-KnownEvents | [string[]]$EventNames | Add event names to the list of known events. |
+| Set-KnownEvents | [string[]]$EventNames | Set the list of known events. |
+| Get-KnownEvents | | Get the list of known events. |
+| New-Window | [string]$XamlPath, [bool]$Debug | Create a new window from a XAML file. |
+| New-WindowUrl | [string]$Url, [bool]$Debug | Create a new window from a URL. |
+| New-WindowXamlString | [string]$XamlString, [bool]$Debug | Create a new window from a XAML string. |
+| Show-Window | [$Elements|$Window]$window, [bool]$dialog = $true | Show the window with the dialog window style. |
+| Enable-VisualStyles | | Enable visual styles for message boxes and other dialogs. |
+| Write-ErrorClean | [string]$Message | Write an error message to the error pipe and host in color without error log. |
 
 
 ## 📝 Changes
@@ -106,6 +107,7 @@ Enable-VisualStyles
 - added `Get-LocalModule` to download a module if needed and return its path
 - fixed `Start-AwaitJob` param `-Arguments` to be the correct `Object[]` type
 - added `Write-ErrorClean` to write to the error pipe and host in color without error log
+- changed `Get-LocalModule` and related, to use the subfolder `\ps-modules` to align more with powershell naming (instead of `\ps_modules`)
 
 ### v1.1.3
 - added `Import-LocalModule` to load a module from .\ps_modules (or possibly download it and then import it)

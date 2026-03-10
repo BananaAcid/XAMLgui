@@ -452,6 +452,7 @@ Function New-ClonedObjectDeep
 
     # deep copy!
     param($srcObject)
+    
     $ms = New-Object System.IO.MemoryStream
     $bf = New-Object System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
     $bf.Serialize($ms, $srcObject)
@@ -471,23 +472,25 @@ Function New-ClonedObject
 
 # To be able to use a local module, because deploying the app on an USB stick
 # will need it and might not have internet access
-function Find-LocalModulePath {
+function Find-LocalModulePath
+{
     param(
         [Parameter(Mandatory=$true, Position=0)]
         [String] $Name,
 
-        [String] $Path = ".\ps_modules"
+        [String] $Path = ".\ps-modules"
     )
 
     return ls "$Path\$Name" -ErrorAction SilentlyContinue | select -Last 1 |% FullName
 }
 # make sure module is downloaded, then import
-function Import-LocalModule {
+function Import-LocalModule
+{
     param(
         [Parameter(Mandatory=$true, Position=0)]
         [String] $Name,
 
-        [String] $Path = ".\ps_modules",
+        [String] $Path = ".\ps-modules",
 
         [Boolean] $Download = $True
     )
@@ -498,12 +501,13 @@ function Import-LocalModule {
     Import-Module (Join-Path $fullPath $Name)
 }
 # make sure module is downloaded, then return full path
-Function Get-LocalModule {
+Function Get-LocalModule
+{
     param(
         [Parameter(Mandatory=$true, Position=0)]
         [String] $Name,
 
-        [String] $Path = ".\ps_modules",
+        [String] $Path = ".\ps-modules",
 
         [Boolean] $Download = $True
     )
@@ -516,7 +520,8 @@ Function Get-LocalModule {
 
 
 # Usefull for Start-AwaitJob -InitBlock (@( Get-FnAsString "fn1", Get-FnAsString "fn2" ) -Join "`n")
-Function Get-FnAsString {
+Function Get-FnAsString 
+{
     param( [String]$FnName )
 
     $fn = Get-Command -Name $FnName -CommandType Function
@@ -525,7 +530,8 @@ Function Get-FnAsString {
 }
 
 # Write to the error pipe and have it appear colored, in the console
-Function Write-ErrorClean {
+Function Write-ErrorClean
+{
     param(
         [Parameter(Mandatory=$false, Position=0, ValueFromPipeline=$true)]
         [String] $Message,
