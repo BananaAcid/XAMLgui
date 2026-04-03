@@ -532,7 +532,8 @@ Function Get-FnAsString
     return "Function {0} {{{1}}}" -f $fn.Name, $fn.ScriptBlock
 }
 
-# Write to the error pipe and have it appear colored, in the console
+
+$script:WritErrorCleanMode = 'pipeline'
 Function Write-ErrorClean
 {
     param(
@@ -541,11 +542,32 @@ Function Write-ErrorClean
 
         # ForegoundColor
         [Parameter(Mandatory=$false, Position=1)]
-        [String] $ForegroundColor = 'Red'
+        [String] $ForegroundColor = $Host.PrivateData.ErrorForegroundColor <# ='Red'#>
     )
 
-    $oldColor = [Console]::ForegroundColor
-    [Console]::ForegroundColor = $ForegroundColor
-    [Console]::Error.WriteLine($Message)
-    [Console]::ForegroundColor = $oldColor
+    if ($script:WritErrorCleanMode -eq 'transcript') {
+        # This version does not use the error pipeline, but is picked up by transcript
+        Write-Host "ERROR: $Message" -ForegroundColor $ForegroundColor
+    }
+    else {
+        # Write to the error pipe and have it appear colored, in the console
+        $oldColor = [Console]::ForegroundColor
+        [Console]::ForegroundColor = $ForegroundColor
+        [Console]::Error.WriteLine($Message)
+        [Console]::ForegroundColor = $oldColor
+    }
+}
+
+Function Set-WriteErrorCleanMode {
+    param(
+        [Parameter(Mandatory=$true, Position=0)]
+        [ValidateSet("pipeline", "transcript")]
+        [String] $Mode
+    )
+
+    $script:WritErrorCleanMode = $Mode
+}
+
+Function Get-WriteErrorCleanMode {
+    return $script:WritErrorCleanMode
 }

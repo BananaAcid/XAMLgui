@@ -98,7 +98,7 @@ Function New-WindowXamlString
     
     # actually not a problem ... do not exit
     if ($match.Success -eq $False) {
-        if ($DebugPreference -ne 'SilentlyContinue') { Write-Host '[XAML.GUI] XAML does not contain a <Window x:Class="..."> which is not optimal, if you have multiple windows.' }
+        if ($DebugPreference -ne 'SilentlyContinue') { Write-Host '[XAMLgui] XAML does not contain a <Window x:Class="..."> which is not optimal, if you have multiple windows.' }
         # Exit 4
     }
 
@@ -119,7 +119,7 @@ Function New-WindowXamlString
         [xml]$XAML = $xamlString
     }
     catch {
-        if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAML.GUI] XAML parsing error" -ForegroundColor Red }
+        if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] XAML parsing error" -ForegroundColor Red }
         if ($DebugPreference -ne 'SilentlyContinue') { Write-Host $_.Exception.message -ForegroundColor Red }
         Exit 5
     }
@@ -155,14 +155,14 @@ Function New-WindowXamlString
         Foreach ($node in $XAML.SelectNodes("//*[@$eventName]")) {
             If (!$node.Attributes['Name']) {
                 # Needed, because XAML elements will later be matched to the pure XML by name to append the event to the parsed XAML Element
-                if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAML.GUI] Adding NAME to element with event" $node.OuterXml -ForegroundColor Yellow }
+                if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] Adding NAME to element with event" $node.OuterXml -ForegroundColor Yellow }
                 $name = $node.LocalName + "_" + $(Get-CRC32Style $node.OuterXml) -replace "-","_" #$(Get-Random)  $(New-Guid)
                 $node.SetAttribute("Name", $name)
 
-                if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAML.GUI] ... Applied new generated Name = $($node.Name)" -ForegroundColor Yellow }
+                if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] ... Applied new generated Name = $($node.Name)" -ForegroundColor Yellow }
 
                 <#*NONAME -- works now above (using Get-CRC32Style)
-                if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAML.GUI] Name not set for element $($node.Name) with event $eventName and function $($node.$eventName)" -ForegroundColor Red }
+                if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] Name not set for element $($node.Name) with event $eventName and function $($node.$eventName)" -ForegroundColor Red }
                 if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "  " $node.OuterXml -ForegroundColor Red }
                 # Exit 3
                 #>
@@ -192,12 +192,12 @@ Function New-WindowXamlString
         $Form = [Windows.Markup.XamlReader]::Load($reader)
     }
     catch [System.Management.Automation.MethodInvocationException] {
-        Write-Warning "[XAML.GUI] We ran into a problem with the XAML code.  Check the syntax for this control..."
+        Write-Warning "[XAMLgui] We ran into a problem with the XAML code.  Check the syntax for this control..."
         if ($DebugPreference -ne 'SilentlyContinue') { Write-Host $error[0].Exception.Message -ForegroundColor Red }
         Exit 1
     }
     catch {#if it broke some other way
-        if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAML.GUI] Unable to load Windows.Markup.XamlReader. Double-check syntax and ensure .net is installed." }
+        if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] Unable to load Windows.Markup.XamlReader. Double-check syntax and ensure .net is installed." }
         Exit 2
     }
 
@@ -205,7 +205,7 @@ Function New-WindowXamlString
     #===========================================================================
     # attaching click handlers
     #===========================================================================
-    if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAML.GUI] Window class is " $(if ($windowClass) { $windowClass } else { "not set" }) }
+    if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] Window class is " $(if ($windowClass) { $windowClass } else { "not set" }) }
 
     # source handlers from scriptblock if supplied
     if ([string]::IsNullOrWhiteSpace($HandlersScriptBlockOrFile)) { <# param not used. #> }
@@ -244,10 +244,10 @@ Function New-WindowXamlString
 
         if ($evData.name) { $name = $evData.name } else { $name = '-no name-' }
         If (!$fns.Count) {
-            if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAML.GUI] Linking event $($evData.ev) on element $name -> function $fnName(`$Sender,`$EventArgs) FAILED: no handler" -ForegroundColor Red }
+            if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] Linking event $($evData.ev) on element $name -> function $fnName(`$Sender,`$EventArgs) FAILED: no handler" -ForegroundColor Red }
         }
         else {
-            if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAML.GUI] Linking event $($evData.ev) on element $name -> function $fnName(`$Sender,`$EventArgs)" -ForegroundColor Green }
+            if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] Linking event $($evData.ev) on element $name -> function $fnName(`$Sender,`$EventArgs)" -ForegroundColor Green }
 
             Invoke-Expression ('$Form.FindName($evData.name).Add_' + $evData.ev + '( $fns[0].ScriptBlock )')
         }

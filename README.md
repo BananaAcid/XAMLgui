@@ -96,12 +96,19 @@ For better notification bubbles, use https://github.com/Windos/BurntToast instea
 | New-Window | [string]$XamlPath, [bool]$Debug | Create a new window from a XAML file. |
 | New-WindowUrl | [string]$Url, [bool]$Debug | Create a new window from a URL. |
 | New-WindowXamlString | [string]$XamlString, [bool]$Debug | Create a new window from a XAML string. |
-| Show-Window | [$Elements|$Window]$window, [bool]$dialog = $true | Show the window with the dialog window style. |
+| Show-Window | [$Elements\|$Window]$window, [bool]$dialog = $true | Show the window with the dialog window style. |
 | Enable-VisualStyles | | Enable visual styles for message boxes and other dialogs. |
-| Write-ErrorClean | [string]$Message | Write an error message to the error pipe and host in color without error log. |
+| Write-ErrorClean | [string]$Message | Write an error message to the error pipe and host in color without error log. Mode will be set by `Set-WriteErrorCleanMode`. |
+| Set-WriteErrorCleanMode | [Parameter(Mandatory=$true, Position=0)][ValidateSet("pipeline", "transcript")]$Mode = "pipline" | Changes the output method of Write-ErrorClean. (`pipline` is default - using errorpipline. `transcript` will just write-host and can be picked up by transcript commands) |
+| Get-WriteErrorCleanMode | | Returns the current mode. |
 
 
 ## 📝 Changes
+
+### v1.1.6
+- fixed debug [XAML.GUI] to [XAMLgui]
+- added Set-WriteErrorCleanMode, Get-WriteErrorCleanMode
+- changed Write-ErrorClean to use the Set-WriteErrorCleanMode mode
 
 ### v1.1.5
 - added types to some fns (they where added in the test project globaly before: `Add-Type -AssemblyName System.Drawing,System.Windows.Forms`)
