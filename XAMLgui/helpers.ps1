@@ -402,7 +402,7 @@ Function Set-RunOnce
     This Command can be used to configure a computer at startup. 
 
     .EXAMPLE 
-    Set-Runonce -command '%systemroot%\System32\WindowsPowerShell\v1.0\powershell.exe -executionpolicy bypass -file c:\Scripts\start.ps1' 
+    Set-Runonce -command '-executionpolicy bypass -file c:\Scripts\start.ps1' 
     Sets a Key to run Powershell at startup and execute C:\Scripts\start.ps1 
 
     .NOTES 
@@ -421,15 +421,14 @@ Function Set-RunOnce
         #The Name of the Registry Key in the Autorun-Key.
         [string]$KeyName = "Run",
 
-
         #Command to run
         [string]$Command = "-executionpolicy bypass -file `"$($MyInvocation.ScriptName)`"",
 
         #Command params to add
         [String]$Params = "",
 
-        #Interpreter to use
-        [String]$Interpreter = "powershell.exe"
+        #Interpreter to use, default is current
+        [String]$Interpreter = $($current, $available = Get-PowershellInterpreter; $available[$current].Source)
     )
 
     $cmdStr = "$($Interpreter) $($Command) $($Params)"

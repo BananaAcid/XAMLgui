@@ -83,7 +83,7 @@ For better notification bubbles, use https://github.com/Windos/BurntToast instea
 | Select-FolderDialog | [string]$Title="Select a Folder", [string]$Description="", [string]$Path=[Environment]::GetFolderPath("Desktop"), [string]$SelectedPath="", [boolean]$Multiselect=$false, [boolean]$ShowNewFolderButton=$false | Show a folder dialog and return the selected folder path. |
 | Select-FileDialog | [string]$Title="Select Folder", [string]$Path="Desktop", [string]$Filter='Images (*.jpg, *.png) \| *.jpg;*.png', [boolean]$Multiselect=$false | Show a file dialog and return the selected file path. |
 | Get-PowershellInterpreter | | Get the current PowerShell interpreter. |
-| Set-RunOnce | [string]$KeyName="Run", [string]$Command="-executionpolicy bypass -file '$($MyInvocation.ScriptName)'", [String]$Params="", [String]$Interpreter="powershell.exe" | Set a script block to run once. |
+| Set-RunOnce | [string]$KeyName="Run", [string]$Command="-executionpolicy bypass -file '$($MyInvocation.ScriptName)'", [String]$Params="", [String]$Interpreter="<path of currently used>" | Set a script block to run once. |
 | New-ClonedObjectDeep | [object]$Object | Clone an object and all its properties recursively. |
 | New-ClonedObject | [object]$Object | Clone an object and all its properties. |
 | Find-LocalModulePath | [string]$Name, [String]$Path=".\ps-modules" | Find the path of a module in the current directory. |
@@ -104,6 +104,9 @@ For better notification bubbles, use https://github.com/Windos/BurntToast instea
 
 
 ## 📝 Changes
+
+### v1.1.7
+- changed `Set-RunOnce` to default to currently used powershell version with full path
 
 ### v1.1.6
 - fixed debug [XAML.GUI] to [XAMLgui]
