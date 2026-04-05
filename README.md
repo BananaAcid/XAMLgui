@@ -1,4 +1,4 @@
-# XAML.GUI framework
+# XAMLgui Framework
 
 Kick off a new window from PowerShell of a Visual Studio created XAML file and attach handlers - the easy way 🚀
 
