@@ -18,12 +18,19 @@
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingCmdletAliases', '', Scope = 'Function', Target = '*')]
 Param()
 
+# List all events for that object
+# $button = New-Object System.Windows.Controls.Button
+# $button | Get-Member -MemberType Event |% Name
+# System.Windows.Controls.Combobox ... System.Windows.Window 
 $script:knownEvents = @(
     # Some major events. There are way more.
     # Window
     "Initialized", "Loaded", "Unloaded", "Activated", "Closed", "Closing", "GotFocus", "LostFocus", "SizeChanged", "GotFocus", "LostFocus", "ContentRendered",
     # Checkbox, Buttons etc
-    "Click", "Checked", "MouseDoubleClick", "MouseEnter", "MouseLeave", "MouseDown", "MouseUp", "MouseLeftButtonDown", "MouseLeftButtonUp", "MouseRightButtonDown", "MouseRightButtonUp", "MouseMove", "MouseWheel",
+    "Click", "Checked", "MouseDoubleClick", "MouseEnter", "MouseLeave", "MouseDown", "MouseUp", "MouseLeftButtonDown", "MouseLeftButtonUp", "MouseRightButtonDown", "MouseRightButtonUp",
+    "MouseMove", "MouseWheel", "PreviewMouseRightButtonDown", "PreviewMouseRightButtonUp",
+    "PreviewMouseDoubleClick", "PreviewTextInput", "PreviewMouseUp", "PreviewMouseDown", "PreviewMouseLeftButtonUp", "PreviewMouseLeftButtonDown",
+
     # Text
     "KeyDown", "KeyUp", "PreviewKeyDown", "PreviewKeyUp",
     # Combobox
@@ -36,9 +43,28 @@ $script:knownEvents = @(
 
 Function Add-KnownEvents
 {
+    [Parameter(ValueFromPipeline = $true)]
     Param ( [String[]]$EventNames )
 
-    $script:knownEvents += $EventNames
+    Process {
+        foreach ($name in $EventNames) {
+            if (-not $script:knownEvents.Contains($name)) {
+                $script:knownEvents += $name
+            }
+        }
+    }
+}
+
+Function Add-KnownEventsByControlName
+{
+    Param ( [String]$ControlName )
+
+    $controlKeyPath = "System.Windows.Controls.$ControlName"
+    if ($ControlName -eq "Window") {
+        $controlKeyPath = "System.Windows.Window"
+    }
+    $control = New-Object $controlKeyPath
+    $control | Get-Member -MemberType Event |% Name | Add-KnownEvents
 }
 
 Function Set-KnownEvents
@@ -192,7 +218,7 @@ Function New-WindowXamlString
         $Form = [Windows.Markup.XamlReader]::Load($reader)
     }
     catch [System.Management.Automation.MethodInvocationException] {
-        Write-Warning "[XAMLgui] We ran into a problem with the XAML code.  Check the syntax for this control..."
+        Write-Warning "[XAMLgui] We ran into a problem with the XAML code. Event might not be known. Check the syntax for this control..."
         if ($DebugPreference -ne 'SilentlyContinue') { Write-Host $error[0].Exception.Message -ForegroundColor Red }
         Exit 1
     }

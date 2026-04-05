@@ -91,6 +91,7 @@ For better notification bubbles, use https://github.com/Windos/BurntToast instea
 | Import-LocalModule | [string]$Name, [String]$Path=".\ps-modules", [Boolean]$Download=$True | Import a module from the current directory's `\ps-module` folder. |
 | Get-FnAsString | [string]$FnName | Get the string representation of a function. |
 | Add-KnownEvents | [string[]]$EventNames | Add event names to the list of known events. |
+| Add-KnownEventsByControlName | [string]$ControlName | Add ALL events names of a control or `"window"` to the list of known events. |
 | Set-KnownEvents | [string[]]$EventNames | Set the list of known events. |
 | Get-KnownEvents | | Get the list of known events. |
 | New-Window | [string]$XamlPath, [bool]$Debug | Create a new window from a XAML file. |
@@ -107,7 +108,8 @@ For better notification bubbles, use https://github.com/Windos/BurntToast instea
 
 ### v1.1.7
 - changed `Set-RunOnce` to default to currently used powershell version with full path
-- added "ContentRendered" to known events 
+- added more events to known events
+- added Add-KnownEventsByControlName
 
 ### v1.1.6
 - fixed debug [XAML.GUI] to [XAMLgui]
