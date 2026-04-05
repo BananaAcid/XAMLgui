@@ -89,6 +89,7 @@ For better notification bubbles, use https://github.com/Windos/BurntToast instea
 | Find-LocalModulePath | [string]$Name, [String]$Path=".\ps-modules" | Find the path of a module in the current directory. |
 | Get-LocalModule | [string]$Name, [String]$Path=".\ps-modules", [Boolean]$Download=$True | Get the path of a module in the current directory if it exists, otherwise download it and return its path. |
 | Import-LocalModule | [string]$Name, [String]$Path=".\ps-modules", [Boolean]$Download=$True | Import a module from the current directory's `\ps-module` folder. |
+| Set-LocalModulePathBase | [string]$Path | Use to set the a default path for LocalModule commands. |
 | Get-FnAsString | [string]$FnName | Get the string representation of a function. |
 | Add-KnownEvents | [string[]]$EventNames | Add event names to the list of known events. |
 | Add-KnownEventsByControlName | [string]$ControlName | Add ALL events names of a control or `"window"` to the list of known events. |
@@ -102,6 +103,7 @@ For better notification bubbles, use https://github.com/Windos/BurntToast instea
 | Write-ErrorClean | [string]$Message | Write an error message to the error pipe and host in color without error log. Mode will be set by `Set-WriteErrorCleanMode`. |
 | Set-WriteErrorCleanMode | [Parameter(Mandatory=$true, Position=0)][ValidateSet("pipeline", "transcript")]$Mode = "pipline" | Changes the output method of Write-ErrorClean. (`pipline` is default - using errorpipline. `transcript` will just write-host and can be picked up by transcript commands) |
 | Get-WriteErrorCleanMode | | Returns the current mode. |
+| Get-XAMLguiVersion | Returns the current XAMLgui version (because: loading the files directly without importing, would not provide the version) |
 
 
 ## 📝 Changes
@@ -110,6 +112,8 @@ For better notification bubbles, use https://github.com/Windos/BurntToast instea
 - changed `Set-RunOnce` to default to currently used powershell version with full path
 - added more events to known events
 - added Add-KnownEventsByControlName
+- added Set-LocalModulePathBase
+- added Get-XAMLguiVersion (because: loading the files directly without importing, would not provide the version)
 
 ### v1.1.6
 - fixed debug [XAML.GUI] to [XAMLgui]

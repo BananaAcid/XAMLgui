@@ -472,27 +472,35 @@ Function New-ClonedObject
     return $srcObject.psobject.copy() # | ConvertTo-Json -depth 100 | ConvertFrom-Json
 }
 
+# In case it needs to be set for subsequent calls
+Function Set-LocalModulePathBase {
+    param ( [string]$Path )
+
+    $Script:LocalModulePathBase = $Path
+}
+
+
 # To be able to use a local module, because deploying the app on an USB stick
 # will need it and might not have internet access
-function Find-LocalModulePath
+Function Find-LocalModulePath
 {
     param(
         [Parameter(Mandatory=$true, Position=0)]
         [String] $Name,
 
-        [String] $Path = ".\ps-modules"
+        [String] $Path = $(if ($Script:LocalModulePathBase) { $Script:LocalModulePathBase } else { ".\ps-modules" })
     )
 
     return ls "$Path\$Name" -ErrorAction SilentlyContinue | select -Last 1 |% FullName
 }
 # make sure module is downloaded, then import
-function Import-LocalModule
+Function Import-LocalModule
 {
     param(
         [Parameter(Mandatory=$true, Position=0)]
         [String] $Name,
 
-        [String] $Path = ".\ps-modules",
+        [String] $Path = $(if ($Script:LocalModulePathBase) { $Script:LocalModulePathBase } else { ".\ps-modules" }),
 
         [Boolean] $Download = $True
     )
@@ -509,7 +517,7 @@ Function Get-LocalModule
         [Parameter(Mandatory=$true, Position=0)]
         [String] $Name,
 
-        [String] $Path = ".\ps-modules",
+        [String] $Path = $(if ($Script:LocalModulePathBase) { $Script:LocalModulePathBase } else { ".\ps-modules" }),
 
         [Boolean] $Download = $True
     )
@@ -569,4 +577,10 @@ Function Set-WriteErrorCleanMode {
 
 Function Get-WriteErrorCleanMode {
     return $script:WritErrorCleanMode
+}
+
+Function Get-XAMLguiVersion {
+    $PSD1 = if (Get-Command Import-PowerShellDataFile -ErrorAction SilentlyContinue ) { Import-PowerShellDataFile "$PSScriptRoot\XAMLgui.psd1" -ErrorAction SilentlyContinue } else { & { Invoke-Expression (Get-Content -Path "$PSScriptRoot\XAMLgui.psd1" -Raw) } }
+    $VERSION = If ($PSD1) { 'v' + $PSD1.ModuleVersion } Else { '' }
+    return $VERSION
 }
