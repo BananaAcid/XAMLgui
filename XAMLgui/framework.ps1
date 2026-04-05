@@ -21,7 +21,7 @@ Param()
 $script:knownEvents = @(
     # Some major events. There are way more.
     # Window
-    "Initialized", "Loaded", "Unloaded", "Activated", "Closed", "Closing", "GotFocus", "LostFocus", "SizeChanged", "GotFocus", "LostFocus",
+    "Initialized", "Loaded", "Unloaded", "Activated", "Closed", "Closing", "GotFocus", "LostFocus", "SizeChanged", "GotFocus", "LostFocus", "ContentRendered",
     # Checkbox, Buttons etc
     "Click", "Checked", "MouseDoubleClick", "MouseEnter", "MouseLeave", "MouseDown", "MouseUp", "MouseLeftButtonDown", "MouseLeftButtonUp", "MouseRightButtonDown", "MouseRightButtonUp", "MouseMove", "MouseWheel",
     # Text
