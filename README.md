@@ -107,6 +107,7 @@ For better notification bubbles, use https://github.com/Windos/BurntToast instea
 
 ### v1.1.7
 - changed `Set-RunOnce` to default to currently used powershell version with full path
+- added "ContentRendered" to known events 
 
 ### v1.1.6
 - fixed debug [XAML.GUI] to [XAMLgui]
