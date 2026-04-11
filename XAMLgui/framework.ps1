@@ -231,15 +231,23 @@ Function New-WindowXamlString
         $Form = [Windows.Markup.XamlReader]::Load($reader)
     }
     catch [System.Management.Automation.MethodInvocationException] {
+        Write-Warning "[XAMLgui] We ran into a problem with the XAML code. Event might not be known. Check the syntax for this control..."
+
         if ($DebugPreference -ne 'SilentlyContinue') {
+            Write-Host "[XAMLgui] Exception: $($error[0].Exception.Message)" -ForegroundColor Red
+
+            # inner exceptions
+            $inner = $_.Exception.InnerException
+            while ($inner -ne $null) {
+                Write-Host "[XAMLgui] Inner Exception: $($inner.Message)" -ForegroundColor DarkRed
+                $inner = $inner.InnerException
+            }
+
+            # XML temp file
             $tempFile = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ([System.IO.Path]::GetRandomFileName())
             $XAML.OuterXml | Out-File $tempFile
             Write-Host "[XAMLgui] XAML file for debugging: $tempFile" -ForegroundColor Blue
         }
-        
-
-        Write-Warning "[XAMLgui] We ran into a problem with the XAML code. Event might not be known. Check the syntax for this control..."
-        if ($DebugPreference -ne 'SilentlyContinue') { Write-Host $error[0].Exception.Message -ForegroundColor Red }
         Exit 1
     }
     catch {#if it broke some other way
