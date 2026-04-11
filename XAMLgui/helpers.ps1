@@ -149,7 +149,6 @@ Function Start-AwaitJob
     }
 }
 
-
 Function Show-MessageBox
 {
     Param
@@ -291,7 +290,6 @@ Function Get-IconFromFile
     return $icon
 }
 
-
 Function Select-FolderDialog
 {
     Param
@@ -361,6 +359,34 @@ Function Select-FileDialog
     If ($FileBrowser.FileNames -like "*\*") {
         # even with multiselect, if only 1 file was selected, it will NOT return an array
         Return $FileBrowser.FileNames
+    }
+    Else {
+        #if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "Cancelled by user" }
+        Return ""
+    }
+}
+
+Function Save-FileDialog
+{
+    Param
+    (
+        [string]$Title="Select Folder",
+        [string]$Path="Desktop",
+        [string]$Filter='Images (*.jpg, *.png)|*.jpg;*.png'
+    )
+
+    Add-Type -AssemblyName System.Windows.Forms
+
+    $FileBrowser = New-Object System.Windows.Forms.SaveFileDialog -Property @{
+        Filter = $Filter # Specified file types
+        Title = $Title
+        InitialDirectory = $Path
+    }
+ 
+    [void]$FileBrowser.ShowDialog()
+
+    If ($FileBrowser.FileName -like "*\*") {
+        Return $FileBrowser.FileName
     }
     Else {
         #if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "Cancelled by user" }

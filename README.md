@@ -68,6 +68,7 @@ For better notification bubbles, use https://github.com/Windos/BurntToast instea
 
 
 ## XAMLgui Framework Functions
+
 | Command | Params | Description |
 | --- | --- | --- |
 | Hide-Console | | Hide the console window. |
@@ -81,7 +82,8 @@ For better notification bubbles, use https://github.com/Windos/BurntToast instea
 | Invoke-BalloonTip | [Parameter(Mandatory=$True)][string]$Message, [string]$Title="Attention $env:username", [System.Windows.Forms.ToolTipIcon]$MessageType="Info", [string]$SysTrayIconPath="", [int]$Duration=1000 | Show a balloon tip with the specified message, title, icon, and duration. |
 | Get-IconFromFile |[string][Parameter(Mandatory=$True)]$FilePath, [string][Parameter(Mandatory=$False)]$Type | Get an icon from a file. |
 | Select-FolderDialog | [string]$Title="Select a Folder", [string]$Description="", [string]$Path=[Environment]::GetFolderPath("Desktop"), [string]$SelectedPath="", [boolean]$Multiselect=$false, [boolean]$ShowNewFolderButton=$false | Show a folder dialog and return the selected folder path. |
-| Select-FileDialog | [string]$Title="Select Folder", [string]$Path="Desktop", [string]$Filter='Images (*.jpg, *.png) \| *.jpg;*.png', [boolean]$Multiselect=$false | Show a file dialog and return the selected file path. |
+| Select-FileDialog | [string]$Title="Select Folder", [string]$Path="Desktop", [string]$Filter='Images (*.jpg, *.png) \| *.jpg;*.png', [boolean]$Multiselect=$false | Show a file dialog and return the selected file path (path must exist). |
+| Save-FileDialog | [string]$Title="Select Folder", [string]$Path="Desktop", [string]$Filter='Images (*.jpg, *.png) \| *.jpg;*.png' | Show a file dialog and return the selected file path (path does not have to exist). |
 | Get-PowershellInterpreter | | Get the current PowerShell interpreter. |
 | Set-RunOnce | [string]$KeyName="Run", [string]$Command="-executionpolicy bypass -file '$($MyInvocation.ScriptName)'", [String]$Params="", [String]$Interpreter="<path of currently used>" | Set a script block to run once. |
 | New-ClonedObjectDeep | [object]$Object | Clone an object and all its properties recursively. |
@@ -107,6 +109,10 @@ For better notification bubbles, use https://github.com/Windos/BurntToast instea
 
 
 ## 📝 Changes
+
+### v1.1.8
+- added Save-FileDialog
+- added more debug output when creating a window
 
 ### v1.1.7
 - changed `Set-RunOnce` to default to currently used powershell version with full path
