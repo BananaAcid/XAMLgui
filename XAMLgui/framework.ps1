@@ -113,7 +113,15 @@ Function New-WindowXamlString
 
     Add-Type -AssemblyName PresentationFramework,PresentationCore,WindowsBase
 
+    if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] New-WindowXamlString ..." -ForegroundColor DarkGreen }
+
     If (!$script:knownEvents) { $script:knownEvents = [String[]]@() }
+
+
+    #===========================================================================
+    # Check if XAML is a window and extract name of the class
+    #===========================================================================
+    if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] Check if XAML is a window and extract name of the class" -ForegroundColor DarkGreen }
 
     # prepare window xaml: replace <Win> with <Window>, also allow <Window.Resources>
     $xamlString = $xamlString -replace '<(/?)Win[a-zA-Z]*','<$1Window'
@@ -140,6 +148,8 @@ Function New-WindowXamlString
     #===========================================================================
     # fix XAML markup for powershell
     #===========================================================================
+    if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] Fix XAML markup for powershell" -ForegroundColor DarkGreen }
+
     $xamlString = $xamlString -replace 'mc:Ignorable="d"','' -replace "x:N",'N' -replace "x:n",'N' -replace "x:Bind", "Binding"
     try {
         [xml]$XAML = $xamlString
@@ -153,6 +163,8 @@ Function New-WindowXamlString
     #===========================================================================
     # storing events
     #===========================================================================
+    if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] Storing events" -ForegroundColor DarkGreen }
+
     $generatedCount = @{} # generated name = int
     # Should generate a name based on its outer XML (complete xml line), that is unique and persistent (unless the line is changed)
     Function Get-CRC32Style
@@ -212,18 +224,26 @@ Function New-WindowXamlString
     #===========================================================================
     #Read XAML
     #===========================================================================
-    $reader = (New-Object System.Xml.XmlNodeReader $XAML)
-
+    if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] Read XAML" -ForegroundColor DarkGreen }
+    
     try {
+        $reader = (New-Object System.Xml.XmlNodeReader $XAML)
         $Form = [Windows.Markup.XamlReader]::Load($reader)
     }
     catch [System.Management.Automation.MethodInvocationException] {
+        if ($DebugPreference -ne 'SilentlyContinue') {
+            $tempFile = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ([System.IO.Path]::GetRandomFileName())
+            $XAML.OuterXml | Out-File $tempFile
+            Write-Host "[XAMLgui] XAML file for debugging: $tempFile" -ForegroundColor Blue
+        }
+        
+
         Write-Warning "[XAMLgui] We ran into a problem with the XAML code. Event might not be known. Check the syntax for this control..."
         if ($DebugPreference -ne 'SilentlyContinue') { Write-Host $error[0].Exception.Message -ForegroundColor Red }
         Exit 1
     }
     catch {#if it broke some other way
-        if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] Unable to load Windows.Markup.XamlReader. Double-check syntax and ensure .net is installed." }
+        if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] Unable to load Windows.Markup.XamlReader. Double-check syntax and ensure .Net is installed." }
         Exit 2
     }
 
@@ -231,7 +251,9 @@ Function New-WindowXamlString
     #===========================================================================
     # attaching click handlers
     #===========================================================================
-    if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] Window class is " $(if ($windowClass) { $windowClass } else { "not set" }) }
+    if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] Attaching click handlers" -ForegroundColor DarkGreen }
+
+    if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] Window class is " $(if ($windowClass) { $windowClass } else { "not set" }) -ForegroundColor Blue }
 
     # source handlers from scriptblock if supplied
     if ([string]::IsNullOrWhiteSpace($HandlersScriptBlockOrFile)) { <# param not used. #> }
@@ -282,12 +304,15 @@ Function New-WindowXamlString
     #===========================================================================
     # Store named elements to be acessable through $Elements
     #===========================================================================
+    if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] Storing named elements" -ForegroundColor DarkGreen }
+
     $Elements = @{}
     #$XAML.SelectNodes("//*[@Name]") | %{Set-Variable -Name "GUI_$($_.Name)" -Value $Form.FindName($_.Name)}
     $XAML.SelectNodes("//*[@Name]") |% { $Elements[$_.Name] = $Form.FindName($_.Name) }
 
     $Elements["_Window"] = $Form
 
+    if ($DebugPreference -ne 'SilentlyContinue') { Write-Host "[XAMLgui] Ready (Elements, Window)" -ForegroundColor DarkGreen }
     return $Elements,$Form
 }
 
